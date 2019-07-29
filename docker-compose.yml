@@ -1,11 +1,9 @@
 version: '3'
 
 services:
-  db:
-    image: postgres
-    container_name: music_db
   web:
     build: .
+    restart: on-failure
     container_name: music_web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -14,3 +12,9 @@ services:
       - "8000:8000"
     links:
       - db
+  db:
+    image: postgres
+    container_name: music_db
+    restart: always
+    ports:
+      - "5432:5432"
