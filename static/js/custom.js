@@ -1,9 +1,11 @@
 $('#register-form').submit(function (e) {
     e.preventDefault();
 
+    let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRFToken': csrfmiddlewaretoken
         }
     });
 
@@ -20,13 +22,13 @@ $('#register-form').submit(function (e) {
 
             // form.find('#please-wait').addClass('hidden');
 
-            if (res.status === 'validation') {
+            if (res.status === false) {
                 $('#register-error').text('');
-                $.each(res.message, (index, item) => {
+                $.each(res.errors, (index, item) => {
                     $('#register-error').append(item + '<br/>');
                 });
             }
-            if (res.status === 'success') {
+            if (res.status === true) {
                 $('#register-error').text(res.message);
                 // hide register modal and show login modal
                 setTimeout(function () {

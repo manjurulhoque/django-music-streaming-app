@@ -1,0 +1,4 @@
+# run command for specific service
+docker-compose run <service name> python manage.py startapp core
+# execute container as -it
+winpty docker exec -it <container name> bash

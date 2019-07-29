@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="csrf-token" content="{% csrf_token %}">
+    {% csrf_token %}
     <title>Music App - Online Music Streaming App</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/line-awesome@1.0.2/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css">
@@ -105,7 +105,7 @@
             </div>
             <h6 class="modal-title text-center mb-3" id="loginTitle">Register For Awesome Listing Experience</h6>
             <div class="modal-body">
-                <form action="#" class="mx-4 pb-5" id="register-form">
+                <form action="{% url 'accounts:register' %}" class="mx-4 pb-5" id="register-form">
                     <div class="form-group">
                         <input name="name" type="text" class="form-control" required placeholder="Enter name">
                     </div>
@@ -113,11 +113,11 @@
                         <input name="email" type="email" class="form-control" required placeholder="Enter email">
                     </div>
                     <div class="form-group">
-                        <input name="password" type="password" class="form-control" required
+                        <input name="password1" type="password" class="form-control" required
                                placeholder="Enter Password">
                     </div>
                     <div class="form-group">
-                        <input name="password_confirmation" type="password" class="form-control" required
+                        <input name="password2" type="password" class="form-control" required
                                placeholder="Confirm Password">
                     </div>
                     <p id="register-error"></p>
