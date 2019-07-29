@@ -1,0 +1,77 @@
+<header id="header" class="bg-primary">
+    <div class="d-flex align-items-center">
+        <button type="button" class="btn toggle-menu mr-3" id="openSidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <form action="#" id="searchForm">
+            <button type="button" class="btn ion-ios-search"></button>
+            <input type="text" placeholder="Search..." class="form-control" id="search" data-search-url="#">
+            <div class="search-card" data-scrollable="true">
+                <div class="mb-3">
+                    <div class="d-flex">
+                        <span class="text-uppercase mr-auto font-weight-bold text-dark">Track</span>
+                        <a href="#">View All</a>
+                    </div>
+                    <hr>
+                    <div class="row" id="search-track">
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <ul class="header-options d-flex align-items-center">
+            {% if request.user.is_authenticated %}
+                <li>
+                    <a href="#" class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                  d="M16,9V7H12V12.5C11.58,12.19 11.07,12 10.5,12A2.5,2.5 0 0,0 8,14.5A2.5,2.5 0 0,0 10.5,17A2.5,2.5 0 0,0 13,14.5V9H16M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2Z">
+                            </path>
+                        </svg>
+                        Upload
+                    </a>
+                </li>
+                <li class="dropdown fade-in">
+                    <a href="javascript:void(0);" class="d-flex align-items-center py-2"
+                       role="button" id="userMenu" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <div class="avatar avatar-sm avatar-circle">
+                            <img src="#" alt="user">
+                        </div>
+                        <span class="pl-2">Hello {{ request.user.name }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                        <a class="dropdown-item" href="#">
+                            <i class="ion-md-contact"></i>
+                            <span>Profile</span></a>
+                        <a class="dropdown-item" href="#">
+                            <i class="ion-md-radio-button-off"></i>
+                            <span>Your Plan</span>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="ion-md-settings"></i>
+                            <span>Settings</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <div class="px-4 py-2">
+                            <a href="#" class="btn btn-sm btn-air btn-pill btn-danger">Logout</a>
+                        </div>
+                    </div>
+                </li>
+            {% else %}
+                <li>
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#login">
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" data-toggle="modal" data-target="#register">
+                        <span>Register</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</header>

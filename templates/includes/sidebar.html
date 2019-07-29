@@ -1,0 +1,65 @@
+<aside id="sidebar" class="sidebar-primary">
+    <div class="sidebar-header d-flex align-items-center">
+        <a href="/" class="brand">
+            <img src="#" alt="listen-app">
+        </a>
+        <button type="button" class="btn p-0 ml-auto" id="hideSidebar">
+            <i class="ion-md-arrow-back h3"></i>
+        </button>
+        <button type="button" class="btn toggle-menu" id="toggleSidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    <nav class="navbar">
+        <ul class="navbar-nav" data-scrollable="true">
+            <li class="nav-item nav-header">Browse Music</li>
+            <li class="nav-item">
+                <a href="/" class="nav-link">
+                    <i class="la la-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="la la-diamond"></i>
+                    <span>Genres</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="la la-music"></i>
+                    <span>Free Music</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="" class="nav-link">
+                    <i class="la la-microphone"></i>
+                    <span>Artists</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="la la-bullseye"></i>
+                    <span>Stations</span>
+                </a>
+            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item nav-header">Your Music</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="la la-heart-o"></i>
+                        <span>Favorites</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="la la-history"></i>
+                        <span>History</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</aside>

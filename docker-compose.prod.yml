@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    restart: on-failure
+    command: gunicorn --bind 0.0.0.0:8080 music.wsgi
+    ports:
+      - "8080:8080"

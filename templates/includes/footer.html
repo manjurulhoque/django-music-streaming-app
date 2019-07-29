@@ -1,0 +1,138 @@
+<div id="audioPlayer" class="player-primary">
+    <div id="progress-container">
+        <input type="range" class="amplitude-song-slider">
+        <progress id="song-played-progress" class="audio-progress audio-progress--played amplitude-song-played-progress"></progress>
+        <progress id="song-buffered-progress" class="audio-progress audio-progress--buffered amplitude-buffered-progress"></progress>
+    </div>
+    <div class="audio">
+        <div class="song-image">
+            <img data-amplitude-song-info="cover_art_url" src="" alt="">
+        </div>
+        <div class="song-info pl-3">
+            <span class="song-name d-inline-block text-truncate" data-amplitude-song-info="name"></span>
+            <span class="song-artists d-block text-muted" data-amplitude-song-info="artist"></span>
+        </div>
+    </div>
+    <div class="audio-controls">
+        <div class="audio-controls--left d-flex mr-auto">
+            <button class="btn btn-icon-only amplitude-repeat">
+                <i class="ion-md-sync"></i>
+            </button>
+        </div>
+        <div class="audio-controls--main d-flex">
+            <button class="btn btn-icon-only amplitude-prev">
+                <i class="ion-md-skip-backward"></i>
+            </button>
+            <button class="btn btn-air btn-pill btn-default btn-icon-only amplitude-play-pause">
+                <i class="ion-md-play"></i> <i class="ion-md-pause"></i>
+            </button>
+            <button class="btn btn-icon-only amplitude-next">
+                <i class="ion-md-skip-forward"></i>
+            </button>
+        </div>
+        <div class="audio-controls--right d-flex ml-auto">
+            <button class="btn btn-icon-only amplitude-shuffle amplitude-shuffle-off">
+                <i class="ion-md-shuffle"></i>
+            </button>
+        </div>
+    </div>
+    <div class="audio-info d-flex align-items-center pr-4">
+        <span class="mr-4">
+            <span class="amplitude-current-minutes"></span>:<span class="amplitude-current-seconds"></span> /
+            <span class="amplitude-duration-minutes"></span>:<span class="amplitude-duration-seconds"></span>
+        </span>
+        <div class="audio-volume dropdown">
+            <button class="btn btn-icon-only" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="ion-md-volume-low"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right volume-dropdown-menu">
+                <input type="range" class="amplitude-volume-slider">
+            </div>
+        </div>
+        <div class="dropleft">
+            <button class="btn btn-icon-only" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="la la-ellipsis-v"></i></button>
+            <ul class="dropdown-menu">
+                <li class="dropdown-item">
+                    <a href="javascript:void(0);" class="dropdown-link">
+                        <i class="la la-heart-o"></i>
+                        <span>Favorite</span>
+                    </a>
+                </li>
+                <li class="dropdown-item">
+                    <a href="javascript:void(0);" class="dropdown-link">
+                        <i class="la la-plus"></i> <span>Add to Playlist</span>
+                    </a>
+                </li>
+                <li class="dropdown-item">
+                    <a href="javascript:void(0);" class="dropdown-link">
+                        <i class="la la-download"></i> <span>Download</span>
+                    </a>
+                </li>
+                <li class="dropdown-item">
+                    <a href="javascript:void(0);" class="dropdown-link">
+                        <i class="la la-share-alt"></i> <span>Share</span>
+                    </a>
+                </li>
+                <li class="dropdown-item">
+                    <a href="#" class="dropdown-link">
+                        <i class="la la-info-circle"></i> <span>Song Info</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-icon-only" id="playList"><i class="ion-md-musical-note"></i></button>
+    </div>
+</div>
+
+<footer id="footer" class="bg-img">
+    <div class="footer-content">
+        <div class="platform-btn-inline">
+            <a href="#" class="btn btn-dark btn-air platform-btn">
+                <i class="ion-logo-android"></i>
+                <div class="platform-btn-info">
+                    <span class="platform-desc">Available on</span>
+                    <span class="platform-name">Android</span>
+                </div>
+            </a>
+            <a href="#" class="btn btn-danger btn-air platform-btn">
+                <i class="ion-logo-apple"></i>
+                <div class="platform-btn-info">
+                    <span class="platform-desc">Available on</span>
+                    <span class="platform-name">App Store</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</footer>
+
+<div class="modal fade" id="shareModal" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Share</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+
+            <div class="modal-body text-center">
+                <div class="mb-2">
+                    <img src="https://www.qrcoder.co.uk/api/v1/?size=5&amp;text=music-app">
+                </div>
+                <a href="#" onclick="MyWindow=window.open('https://www.facebook.com/dialog/share?app_id=&amp;display=popup&amp;href=music-app','Facebook share','width=600,height=300'); return false;" class="btn btn-primary btn-sm waves-effect waves-light">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a href="#" onclick="MyWindow=window.open('https://twitter.com/share?url=music-app','Twitt this','width=600,height=300'); return false;" class="btn btn-info btn-sm waves-effect waves-light">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <a href="#" onclick="MyWindow=window.open('https://www.linkedin.com/shareArticle?mini=true&url=music-app&title=Listen-App','Twitt this','width=600,height=300'); return false;" class="btn btn-success btn-sm waves-effect waves-light">
+                    <i class="fa fa-linkedin"></i>
+                </a>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-sm waves-effect waves-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

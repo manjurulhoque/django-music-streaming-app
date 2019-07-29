@@ -1,0 +1,35 @@
+<li class="dropleft">
+    <a href="javascript:void(0);" class="btn btn-icon-only p-0 w-auto h-auto" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+        <i class="la la-ellipsis-h"></i>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="dropdown-item">
+            <a href="javascript:void(0);" class="dropdown-link favorite">
+                <i class="la la-heart-o"></i> <span>Favorite</span>
+            </a>
+        </li>
+        <li class="dropdown-item">
+            <a href="javascript:void(0);" class="dropdown-link">
+                <i class="la la-plus"></i> <span>Add to Playlist</span>
+            </a>
+        </li>
+        <li class="dropdown-item">
+            <a href="javascript:void(0);" class="dropdown-link">
+                <i class="la la-download"></i> <span>Download</span>
+            </a>
+        </li>
+        <li class="dropdown-item">
+            <a href="javascript:void(0);" class="dropdown-link">
+                <i class="la la-share-alt"></i> <span>Share</span>
+            </a>
+        </li>
+        <li class="dropdown-item">
+            {% if song %}
+                <a href="#" class="dropdown-link">
+                    <i class="la la-info-circle"></i> <span>Song Info</span>
+                </a>
+            {% endif %}
+        </li>
+    </ul>
+</li>
