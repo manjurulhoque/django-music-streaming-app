@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="csrf-token" content="{% csrf_token %}">
+    <title>Music App - Online Music Streaming App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/line-awesome@1.0.2/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+    <style>
+        @font-face {
+            font-family: LineAwesome;
+            font-weight: 400;
+            font-style: normal
+        }
+
+        @font-face {
+            font-family: Ionicons;
+            font-weight: 400;
+            font-style: normal
+        }
+
+        @font-face {
+            font-family: slick;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            @font-face {
+                font-family: LineAwesome;
+            }
+        }
+    </style>
+    {% include 'includes/stylesheets.html' %}
+    <link type="text/css" href="{% static 'css/custom.css' %}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div id="loading">
+    <div class="loader">
+        <div class="eq">
+            <span class="eq-bar eq-bar--1"></span>
+            <span class="eq-bar eq-bar--2"></span>
+            <span class="eq-bar eq-bar--3"></span>
+            <span class="eq-bar eq-bar--4"></span>
+            <span class="eq-bar eq-bar--5"></span>
+            <span class="eq-bar eq-bar--6"></span>
+        </div>
+        <span class="text">Loading</span>
+    </div>
+</div>
+<div id="wrapper" data-scrollable="true">
+    {% include 'includes/sidebar.html' %}
+    {% include 'includes/nav.html' %}
+    {% block content %}{% endblock %}
+</div>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 pb-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <h6 class="modal-title text-center mb-3" id="loginTitle">Login For Awesome Listing Experience</h6>
+            <div class="modal-body">
+                <form action="#" class="mx-4 pb-5" id="login-form">
+                    <div class="social-login">
+                        <a href="javascript:void(0);" class="w-100 btn btn-social btn-facebook btn-default-air">
+                            <span class="btn-content">
+                                <i class="ion-logo-facebook"></i>
+                                <span class="pl-2">Login With Facebook</span>
+                            </span>
+                        </a>
+                        <a href="javascript:void(0);" class="w-100 mt-3 btn btn-social btn-google btn-default-air">
+                            <span class="btn-content">
+                                <i class="ion-logo-google"></i>
+                                <span class="pl-2">Login With Google</span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-control" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" class="form-control" placeholder="Enter password">
+                    </div>
+                    <p id="login-error"></p>
+                    <button type="submit" class="btn btn-block btn-bold btn-air btn-info">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="loginTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0 pb-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <h6 class="modal-title text-center mb-3" id="loginTitle">Register For Awesome Listing Experience</h6>
+            <div class="modal-body">
+                <form action="#" class="mx-4 pb-5" id="register-form">
+                    <div class="form-group">
+                        <input name="name" type="text" class="form-control" required placeholder="Enter name">
+                    </div>
+                    <div class="form-group">
+                        <input name="email" type="email" class="form-control" required placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <input name="password" type="password" class="form-control" required
+                               placeholder="Enter Password">
+                    </div>
+                    <div class="form-group">
+                        <input name="password_confirmation" type="password" class="form-control" required
+                               placeholder="Confirm Password">
+                    </div>
+                    <p id="register-error"></p>
+                    <button type="submit" class="btn btn-block btn-bold btn-air btn-info">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="backdrop header-backdrop"></div>
+<div class="backdrop sidebar-backdrop"></div>
+{% include 'includes/javascripts.html' %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
