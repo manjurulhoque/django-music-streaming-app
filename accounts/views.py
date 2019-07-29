@@ -1,9 +1,11 @@
 import json
+
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse, HttpResponse
 from .forms import RegistrationForm
 
 
-def register(request):
+def register_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password1 = request.POST.get('password1')
@@ -20,6 +22,23 @@ def register(request):
             for field in form:
                 for error in field.errors:
                     errors.append(error)
+            return JsonResponse({"status": False, "errors": errors})
+    else:
+        return HttpResponse(json.dumps({"message": "Denied"}), content_type="application/json")
+
+
+def login_user(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        data = {'email': email, 'password': password}
+        user = authenticate(email=email, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+            return JsonResponse({"status": True, "message": "User logged in"})
+        else:
+            errors = ["User doesn't exists"]
             return JsonResponse({"status": False, "errors": errors})
     else:
         return HttpResponse(json.dumps({"message": "Denied"}), content_type="application/json")

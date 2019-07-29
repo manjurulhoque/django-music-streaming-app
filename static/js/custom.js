@@ -1,7 +1,7 @@
+let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
 $('#register-form').submit(function (e) {
     e.preventDefault();
-
-    let csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     $.ajaxSetup({
         headers: {
@@ -49,7 +49,7 @@ $('#login-form').submit(function (e) {
 
     $.ajaxSetup({
         headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRFToken': csrfmiddlewaretoken
         }
     });
 
@@ -66,19 +66,17 @@ $('#login-form').submit(function (e) {
 
             // form.find('#please-wait').addClass('hidden');
 
-            if (res.status === 'validation') {
+            if (res.status === false) {
                 $('#login-error').text('');
-                $.each(res.message, (index, item) => {
+                $.each(res.errors, (index, item) => {
                     $('#login-error').append(item + '<br/>');
                 });
-            } else if (res.status === 'success') {
+            } else if (res.status === true) {
                 $('#login-error').text(res.message);
                 // Redirect to given url
                 setTimeout(function () {
-                    window.location.href = res.redirect;
+                    location.reload();
                 }, 2000);
-            } else if (res.status === 'error') {
-                $('#login-error').text(res.message);
             }
         },
         error: function (err) {
