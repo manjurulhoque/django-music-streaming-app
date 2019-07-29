@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: music_db
+  web:
+    build: .
+    container_name: music_web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/var/www/html/djangomusicapp
+    ports:
+      - "8000:8000"
+    links:
+      - db
