@@ -1,0 +1,335 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block stylesheets %}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <link href="{% static 'css/select2-bootstrap4.min.css' %}" rel="stylesheet"/>
+
+    <style>
+        .lds-ellipsis {
+            display: inline-block;
+            position: relative;
+            width: 64px;
+            height: 64px;
+        }
+
+        .lds-ellipsis div {
+            position: absolute;
+            top: 27px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #921bb3;
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+
+        .lds-ellipsis div:nth-child(1) {
+            left: 6px;
+            animation: lds-ellipsis1 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(2) {
+            left: 6px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(3) {
+            left: 26px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(4) {
+            left: 45px;
+            animation: lds-ellipsis3 0.6s infinite;
+        }
+
+        @keyframes lds-ellipsis1 {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes lds-ellipsis3 {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(0);
+            }
+        }
+
+        @keyframes lds-ellipsis2 {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(19px, 0);
+            }
+        }
+
+        .upload-image svg {
+            width: 55px;
+            height: 55px;
+        }
+
+        .upload-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 260px;
+            height: 260px;
+            background-color: rgba(0, 0, 0, 0.06);
+            color: #4b4b4b;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 2px dashed #cdcdcd;
+        }
+    </style>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <main id="pageWrapper">
+        <div class="banner bg-song"></div>
+        <div class="main-container">
+            <div class="row section">
+                <div class="col-xl-10 col-md-12 mx-auto">
+                    <div class="card">
+                        <form action="{% url 'core:upload' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">Add Music</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 col-xl-4">
+                                        <div class="upload-image">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <path fill="currentColor"
+                                                      d="M5,3A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H14.09C14.03,20.67 14,20.34 14,20C14,19.32 14.12,18.64 14.35,18H5L8.5,13.5L11,16.5L14.5,12L16.73,14.97C17.7,14.34 18.84,14 20,14C20.34,14 20.67,14.03 21,14.09V5C21,3.89 20.1,3 19,3H5M19,16V19H16V21H19V24H21V21H24V19H21V16H19Z"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xl-8">
+                                        <div class="form-row form-group">
+                                            <label for="songFile" class="col-md-4 text-md-right col-form-label">Song
+                                                File</label>
+                                            <div class="col-md-7">
+                                                <div class="custom-file">
+                                                    <input type="file" name="song" class="custom-file-input"
+                                                           id="songFile"
+                                                           accept=".mp3,audio/*" required>
+                                                    <label class="custom-file-label" for="songFile" id="songChoose">Choose
+                                                        file</label>
+                                                    <span role="alert" style="color: #8c8e90; font-size: 10px">
+                                                        <strong>Max file size is 10MB</strong>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-group">
+                                            <label for="songName" class="col-md-4 text-md-right col-form-label">Song
+                                                Name</label>
+                                            <div class="col-md-7">
+                                                <input type="text" name="title" id="songName" class="form-control"
+                                                       required
+                                                       value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-group">
+                                            <label for="songImage" class="col-md-4 text-md-right col-form-label">Song
+                                                Cover Image</label>
+                                            <div class="col-md-7">
+                                                <div class="custom-file">
+                                                    <input type="file" name="thumbnail" class="custom-file-input"
+                                                           id="songImage" required>
+                                                    <label class="custom-file-label" for="songImage">Choose file</label>
+                                                    <span role="alert" style="color: #8c8e90; font-size: 10px">
+                                                        <strong>Max file size is 2MB</strong>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-group">
+                                            <label for="description" class="col-md-4 text-md-right col-form-label">Description</label>
+                                            <div class="col-md-7">
+                                                <textarea name="description" id="description" class="form-control"
+                                                          required rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-group">
+                                            <label for="artistName" class="col-md-4 text-md-right col-form-label">Artist
+                                                Name</label>
+                                            <div class="col-md-7">
+                                                <select name="artists[]" class="select2 form-control" multiple="multiple" id="artistName">
+                                                    <option></option>
+                                                    {% for artist in artists %}
+                                                        <option value="{{ artist.id }}">{{ artist.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-group">
+                                            <label for="genre"
+                                                   class="col-md-4 text-md-right col-form-label">Genre</label>
+                                            <div class="col-md-7">
+                                                <select name="genre_id" id="genre" class="form-control" required>
+                                                    <option value="" selected disabled>Select Genre</option>
+                                                    {% for genre in genres %}
+                                                        <option value="{{ genre.id }}">{{ genre.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-group">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-7">
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="free" name="song_type"
+                                                           class="custom-control-input"
+                                                           value="free" required>
+                                                    <label class="custom-control-label" for="free">Free Song</label>
+                                                </div>
+                                                <div class="custom-control custom-radio custom-control-inline">
+                                                    <input type="radio" id="paid" name="song_type"
+                                                           class="custom-control-input"
+                                                           required value="paid">
+                                                    <label class="custom-control-label" for="paid">Paid Song</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row form-group" id="price">
+                                            <label for="songPrice" class="col-md-4 text-md-right col-form-label">Song
+                                                Price</label>
+                                            <div class="col-md-7">
+                                                <input type="number" step=".1" name="price" id="songPrice"
+                                                       class="form-control" value="">
+                                                <span class="form-text text-muted">Please add Song Price if Song is paid</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-md-6 offset-5">
+                                        <div class="lds-ellipsis" style="display: none;">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5"></div>
+                                    <div class="col-md-7">
+                                        <button type="submit" class="btn btn-brand btn-air">Save Song</button>
+                                        <button type="reset" class="btn btn-outline-secondary">Clear Form</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'includes/footer.html' %}
+    </main>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript">
+
+        let select2 = $(".select2");
+
+        select2.select2({
+            placeholder: "Select artists",
+            theme: 'bootstrap4',
+            width: 'style',
+            tags: true,
+        });
+
+        select2.on('select2:select', function (e) {
+            let elm = e.params.data.element;
+            $elm = jQuery(elm);
+            $t = jQuery(this);
+            $t.append($elm);
+            $t.trigger('change.select2');
+        });
+
+        $('#songImage').change(function () {
+            if (this.files && this.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.upload-image svg').remove();
+                    $('.upload-image img').remove();
+                    $('.upload-image').prepend('<img src="' + e.target.result + '" alt="" style="width: 100%"/>');
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        function _(el) {
+            return document.getElementById(el);
+        }
+
+        let form = $('form');
+
+        form.submit(function (e) {
+            e.preventDefault();
+
+            $(this).find('button[type=submit]').attr('disabled', true);
+            $(this).find('.lds-ellipsis').css('display', "block");
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'post',
+                datatype: 'json',
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                success: function (data) {
+
+                    form.find('button[type=submit]').attr('disabled', false);
+                    form.find('.lds-ellipsis').css('display', "none");
+
+                    if (data.status === 'validation' || data.status === 'error') {
+                        $.each(data.message, function (index, message) {
+                            toastr.warning(message);
+                        });
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                            "timeOut ": 30,
+                        };
+                    } else if (data.status === 'success') {
+
+                        toastr.options = {
+                            "positionClass": "toast-bottom-right",
+                        };
+                        toastr.success(data.message);
+
+                        setTimeout(function () {
+                            window.location.href = data.redirect;
+                        }, 2000);
+                    }
+                }, error: function (err) {
+                    console.log(err.data);
+                    form.find('.lds-ellipsis').css('display', "none");
+                    $(this).find('button[type=submit]').attr('disabled', false);
+                }
+            });
+        })
+    </script>
+
+{% endblock %}
