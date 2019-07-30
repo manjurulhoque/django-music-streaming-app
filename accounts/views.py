@@ -1,7 +1,9 @@
 import json
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse, HttpResponse
+from django.shortcuts import redirect
+
 from .forms import RegistrationForm
 
 
@@ -42,3 +44,8 @@ def login_user(request):
             return JsonResponse({"status": False, "errors": errors})
     else:
         return HttpResponse(json.dumps({"message": "Denied"}), content_type="application/json")
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('core:home')
