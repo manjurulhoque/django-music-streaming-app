@@ -96,7 +96,7 @@ $(document).ready(function () {
 
     $('#audioPlayer').css('visibility', 'hidden');
 
-    $('input[type=radio][name=song_type]').change(function () {
+    $('input[type=radio][name=type]').change(function () {
         if (this.value === 'free') {
             $('#price').find("*").prop('disabled', true);
         } else if (this.value === 'paid') {

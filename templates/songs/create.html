@@ -122,11 +122,8 @@
                                                 File</label>
                                             <div class="col-md-7">
                                                 <div class="custom-file">
-                                                    <input type="file" name="song" class="custom-file-input"
-                                                           id="songFile"
-                                                           accept=".mp3,audio/*" required>
-                                                    <label class="custom-file-label" for="songFile" id="songChoose">Choose
-                                                        file</label>
+                                                    <input type="file" name="song" class="custom-file-input" id="songFile" accept=".mp3,audio/*" required>
+                                                    <label class="custom-file-label" for="songFile" id="songChoose">Choose file</label>
                                                     <span role="alert" style="color: #8c8e90; font-size: 10px">
                                                         <strong>Max file size is 10MB</strong>
                                                     </span>
@@ -134,17 +131,13 @@
                                             </div>
                                         </div>
                                         <div class="form-row form-group">
-                                            <label for="songName" class="col-md-4 text-md-right col-form-label">Song
-                                                Name</label>
+                                            <label for="songName" class="col-md-4 text-md-right col-form-label">Song Name</label>
                                             <div class="col-md-7">
-                                                <input type="text" name="title" id="songName" class="form-control"
-                                                       required
-                                                       value="">
+                                                <input type="text" name="title" id="songName" class="form-control" required value="">
                                             </div>
                                         </div>
                                         <div class="form-row form-group">
-                                            <label for="songImage" class="col-md-4 text-md-right col-form-label">Song
-                                                Cover Image</label>
+                                            <label for="songImage" class="col-md-4 text-md-right col-form-label">Song Cover Image</label>
                                             <div class="col-md-7">
                                                 <div class="custom-file">
                                                     <input type="file" name="thumbnail" class="custom-file-input"
@@ -164,8 +157,7 @@
                                             </div>
                                         </div>
                                         <div class="form-row form-group">
-                                            <label for="artistName" class="col-md-4 text-md-right col-form-label">Artist
-                                                Name</label>
+                                            <label for="artistName" class="col-md-4 text-md-right col-form-label">Artist Name</label>
                                             <div class="col-md-7">
                                                 <select name="artists[]" class="select2 form-control" multiple="multiple" id="artistName">
                                                     <option></option>
@@ -179,7 +171,7 @@
                                             <label for="genre"
                                                    class="col-md-4 text-md-right col-form-label">Genre</label>
                                             <div class="col-md-7">
-                                                <select name="genre_id" id="genre" class="form-control" required>
+                                                <select name="genre" id="genre" class="form-control" required>
                                                     <option value="" selected disabled>Select Genre</option>
                                                     {% for genre in genres %}
                                                         <option value="{{ genre.id }}">{{ genre.name }}</option>
@@ -191,13 +183,13 @@
                                             <div class="col-md-4"></div>
                                             <div class="col-md-7">
                                                 <div class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" id="free" name="song_type"
+                                                    <input type="radio" id="free" name="type"
                                                            class="custom-control-input"
                                                            value="free" required>
                                                     <label class="custom-control-label" for="free">Free Song</label>
                                                 </div>
                                                 <div class="custom-control custom-radio custom-control-inline">
-                                                    <input type="radio" id="paid" name="song_type"
+                                                    <input type="radio" id="paid" name="type"
                                                            class="custom-control-input"
                                                            required value="paid">
                                                     <label class="custom-control-label" for="paid">Paid Song</label>
@@ -326,7 +318,7 @@
                 }, error: function (err) {
                     console.log(err.data);
                     form.find('.lds-ellipsis').css('display', "none");
-                    $(this).find('button[type=submit]').attr('disabled', false);
+                    form.find('button[type=submit]').attr('disabled', false);
                 }
             });
         })

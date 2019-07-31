@@ -2,3 +2,5 @@
 docker-compose run <service name> python manage.py startapp core
 # execute container as -it
 winpty docker exec -it <container name> bash
+# see the continuous logs of a service using -f flag
+docker logs music_web -f
