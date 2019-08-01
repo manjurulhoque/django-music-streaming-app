@@ -7,6 +7,8 @@ app_name = "core"
 
 urlpatterns = [
     path('', home, name='home'),
+    path('genres', GenreListView.as_view(), name='genres'),
+    path('genres/<int:pk>', SongsByGenreListView.as_view(), name='songs-by-genre'),
     path('songs/', include([
         path('make-favorite', favoriteunfavorite, name='song-favorite'),
         path('upload', SongUploadView.as_view(), name='upload'),

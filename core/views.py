@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView, DeleteView
+from django.views.generic import CreateView, DetailView, DeleteView, ListView
 
 from utils.song_utils import generate_key
 from .forms import *
@@ -73,6 +73,23 @@ class SongDetailsView(DetailView):
     context_object_name = 'song'
     slug_field = 'audio_id'
     slug_url_kwarg = 'audio_id'
+
+
+class GenreListView(ListView):
+    model = Genre
+    template_name = 'genres/index.html'
+    context_object_name = 'genres'
+
+
+class SongsByGenreListView(DetailView):
+    model = Genre
+    template_name = 'genres/songs-by-genre.html'
+    context_object_name = 'genre'
+
+    def get_context_data(self, **kwargs):
+        context = super(SongsByGenreListView, self).get_context_data(**kwargs)
+        context['songs'] = self.get_object().song_set.all
+        return context
 
 
 class FavoriteCreateView(CreateView):

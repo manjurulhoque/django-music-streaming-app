@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main id="pageWrapper">
+
+        <div class="banner bg-song"></div>
+        <div class="main-container">
+            <div class="section row">
+                {% for genre in genres %}
+                    <div class="col-xl-3 col-lg-4 col-sm-6 pb-4">
+                        <div class="custom-card">
+                            <div class="custom-card--img">
+                                <a href="{% url 'core:songs-by-genre' genre.id %}">
+                                    <img src="{{ genre.thumbnail.url }}" alt="Genre"
+                                         class="card-img--radius-md">
+                                    <span class="bg-blur">{{ genre.name }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include 'includes/footer.html' %}
+    </main>
+
+{% endblock %}

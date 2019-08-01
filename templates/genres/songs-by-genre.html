@@ -1,0 +1,82 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main id="pageWrapper">
+        <div class="banner bg-song"></div>
+        <div class="main-container">
+            <div class="row align-items-end">
+                <div class="col-6 ml-auto">
+                    <form action="#" class="form-inline justify-content-end">
+                        <label class="mr-2" for="filter2">Sorted By:</label>
+                        <select class="custom-select mr-sm-2" id="filter2">
+                            <option selected="selected">Popular</option>
+                            <option value="1">A-Z</option>
+                            <option value="2">Z-A</option>
+                        </select>
+                    </form>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+            </div>
+            <div class="row section">
+                {% if songs.count > 0 %}
+                    {% for song in songs %}
+                        <div class="col-xl-3 col-lg-4 col-sm-6 pb-4">
+                            <div class="custom-card">
+                                <div class="custom-card--img">
+                                    <div class="custom-card--info">
+                                        <div class="dropdown dropdown-icon">
+                                            <a href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="ion-md-more"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li class="dropdown-item">
+                                                    <a href="javascript:void(0);" class="dropdown-link favorite">
+                                                        <i class="la la-heart-o"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="javascript:void(0);" class="dropdown-link">
+                                                        <i class="la la-plus"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="javascript:void(0);" class="dropdown-link">
+                                                        <i class="la la-download"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-item">
+                                                    <a href="javascript:void(0);" class="dropdown-link">
+                                                        <i class="la la-share-alt"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'core:upload-details' song.audio_id %}">
+                                        <img src="{{ song.thumbnail.url }}"
+                                             alt="{{ song.title }}"
+                                             style="width: 350px; height: 210px"
+                                             class="card-img--radius-lg">
+                                    </a>
+                                </div>
+                                <a href="{% url 'core:upload-details' song.audio_id %}" class="custom-card--link mt-2">
+                                    <h6>{{ song.title }}</h6>
+                                    <p>{{ song.artist }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h3>No song found with this genre!</h3>
+                {% endif %}
+
+            </div>
+        </div>
+        {% include 'includes/footer.html' %}
+    </main>
+
+{% endblock %}
