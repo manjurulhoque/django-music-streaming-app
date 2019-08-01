@@ -45,18 +45,18 @@ class SongUploadView(CreateView):
 
     def form_valid(self, form):
         song = TinyTag.get(self.request.FILES['song'].file.name)
-        # print(self.request.POST.getlist('artists[]'))
-        # print(self.request.FILES['song'].temporary_file_path)
         form.instance.audio_id = generate_key(15, 15)
         form.instance.user = self.request.user
         form.instance.playtime = song.duration
         form.instance.size = song.filesize
-        artists = list(Artist.objects.filter(pk__in=self.request.POST.getlist('artists[]')))
-        print(artists)
+        artists = self.request.POST.getlist('artists[]')
+        form.save()
         form.instance.artists.set(artists)
         form.save()
         data = {
-            'message': "Successfully submitted form data."
+            'status': True,
+            'message': "Successfully submitted form data.",
+            'redirect': reverse_lazy('core:upload-details', kwargs={'audio_id': form.instance.audio_id})
         }
         return JsonResponse(data)
 
@@ -65,3 +65,5 @@ class SongDetailsView(DetailView):
     model = Song
     template_name = 'songs/show.html'
     context_object_name = 'song'
+    slug_field = 'audio_id'
+    slug_url_kwarg = 'audio_id'

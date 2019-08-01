@@ -1,3 +1,4 @@
+{% load static %}
 <header id="header" class="bg-primary">
     <div class="d-flex align-items-center">
         <button type="button" class="btn toggle-menu mr-3" id="openSidebar">
@@ -38,7 +39,7 @@
                        role="button" id="userMenu" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
                         <div class="avatar avatar-sm avatar-circle">
-                            <img src="#" alt="user">
+                            <img src="{% static 'images/users/avatar.jpg' %}" alt="user">
                         </div>
                         <span class="pl-2">Hello {{ request.user.name }}</span>
                     </a>

@@ -292,6 +292,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
+                    console.log(data);
 
                     form.find('button[type=submit]').attr('disabled', false);
                     form.find('.lds-ellipsis').css('display', "none");
@@ -304,7 +305,7 @@
                             "positionClass": "toast-bottom-right",
                             "timeOut ": 30,
                         };
-                    } else if (data.status === 'success') {
+                    } else if (data.status === true) {
 
                         toastr.options = {
                             "positionClass": "toast-bottom-right",
