@@ -49,7 +49,13 @@ class SongUploadView(CreateView):
         form.instance.user = self.request.user
         form.instance.playtime = song.duration
         form.instance.size = song.filesize
-        artists = self.request.POST.getlist('artists[]')
+        artists = []
+        for a in self.request.POST.getlist('artists[]'):
+            try:
+                artists.append(int(a))
+            except:
+                artist = Artist.objects.create(name=a)
+                artists.append(artist)
         form.save()
         form.instance.artists.set(artists)
         form.save()
