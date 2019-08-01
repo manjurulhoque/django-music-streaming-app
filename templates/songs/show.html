@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% load is_favorited %}
 
 {% block content %}
 
@@ -38,13 +39,13 @@
                         </div>
                         <div class="col-xl-4 col-lg-6">
                             <div class="pt-3 pt-lg-0 text-lg-right">
-                                <button class="btn btn-pill btn-air btn-danger btn-icon-only" id="btn-favorite" data-song-id="{{ song.id }}" data-user="{{ request.user }}">
-                                    <i class="la la-heart"></i>
-                                    {#                                    @if($song->isFavorited() == 'remove' && auth()->check())#}
-                                    {#                                    <i class="la la-heart"></i>#}
-                                    {#                                    @else#}
-                                    {#                                    <i class="la la-heart-o"></i>#}
-                                    {#                                    @endif#}
+                                {% is_favorited song request.user as favorited %}
+                                <button class="btn btn-pill btn-air btn-danger btn-icon-only" id="btn-favorite" data-decision="{{ favorited }}" data-url="{% url 'core:song-favorite' %}" data-song-id="{{ song.id }}" data-user="{{ request.user }}">
+                                    {% if favorited == 'remove' and request.user.is_authenticated %}
+                                        <i class="la la-heart"></i>
+                                    {% else %}
+                                        <i class="la la-heart-o"></i>
+                                    {% endif %}
                                 </button>
                                 <button class="btn btn-pill btn-air btn-warning btn-icon-only" id="btn-playlist">
                                     <i class="la la-plus"></i>
@@ -88,7 +89,7 @@
 
                 $.ajaxSetup({
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRFToken': csrfmiddlewaretoken
                     }
                 });
 
@@ -101,8 +102,7 @@
                     },
                     dataType: 'json',
                     success: function (res) {
-                        if (res.status === 'success') {
-                            console.log(decision);
+                        if (res.status === true) {
                             if (decision === 'make') {
                                 favorite_btn.attr('data-decision', 'remove');
                                 favorite_btn.find('i.la-heart-o').removeClass('la-heart-o').addClass('la-heart');

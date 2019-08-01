@@ -3,11 +3,11 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, DeleteView
 
 from utils.song_utils import generate_key
 from .forms import *
-from tinytag import TinyTag, TinyTagException
+from tinytag import TinyTag
 
 
 def home(request):
@@ -73,3 +73,81 @@ class SongDetailsView(DetailView):
     context_object_name = 'song'
     slug_field = 'audio_id'
     slug_url_kwarg = 'audio_id'
+
+
+class FavoriteCreateView(CreateView):
+    form_class = FavoriteForm
+    http_method_names = ['post']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(FavoriteCreateView, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            data = {
+                'status': True,
+                'message': "Please login first",
+                'redirect': None
+            }
+            return JsonResponse(data=data)
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+
+def favoriteunfavorite(request):
+    if request.method == "POST":
+        if request.POST.get('decision') == 'make':
+            song = Song.objects.get(id=request.POST.get('song_id'))
+            if not Favorite.objects.filter(user=request.user, song=song).exists():
+                Favorite.objects.create(user=request.user, song=song)
+                data = {
+                    'status': True,
+                    'message': "Song marked as favorite",
+                    'redirect': None
+                }
+                return JsonResponse(data)
+            else:
+                data = {
+                    'status': True,
+                    'message': "Already favorite",
+                    'redirect': None
+                }
+
+                return JsonResponse(data)
+        else:
+            song = Song.objects.get(id=request.POST.get('song_id'))
+            Favorite.objects.filter(user=request.user, song=song).delete()
+            data = {
+                'status': True,
+                'message': "Song unfavorited",
+                'redirect': None
+            }
+            return JsonResponse(data)
+    else:
+        data = {
+            'status': False,
+            'message': "Method not allowed",
+            'redirect': None
+        }
+
+        return JsonResponse(data)
+
+
+class UnFavoriteView(DeleteView):
+    model = Favorite
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.delete()
+        data = {
+            'status': True,
+            'message': "Song unfavorited.",
+            'redirect': None
+        }
+
+        return JsonResponse(data)

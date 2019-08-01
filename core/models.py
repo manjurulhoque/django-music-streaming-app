@@ -24,6 +24,11 @@ class Genre(models.Model):
     thumbnail = models.ImageField(upload_to="genres", default="default.jpeg")
 
 
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    song = models.ForeignKey('Song', on_delete=models.CASCADE)
+
+
 def song_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'songs/{0}/{1}'.format(strftime('%Y/%m/%d'), generate_file_name() + '.' + filename.split('.')[-1])

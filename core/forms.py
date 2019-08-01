@@ -14,3 +14,12 @@ class SongUploadForm(forms.ModelForm):
 
     def clean_user(self):
         return self.user
+
+
+class FavoriteForm(forms.ModelForm):
+    class Meta:
+        model = Favorite
+        fields = ("song",)
+
+    def clean_song(self):
+        pass
