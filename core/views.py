@@ -11,7 +11,12 @@ from tinytag import TinyTag
 
 
 def home(request):
-    return render(request, "home.html", {})
+    context = {
+        'artists': Artist.objects.all(),
+        'genres': Genre.objects.all()[:6],
+        'latest_songs': Song.objects.all()[:6]
+    }
+    return render(request, "home.html", context)
 
 
 class SongUploadView(CreateView):

@@ -1,7 +1,232 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 
 {% block content %}
 
+    <main id="pageWrapper">
 
+        <div class="banner bg-home"></div>
+        <div class="main-container">
+            <div class="row">
+                <div class="section col-xl-7 col-lg-6">
+                    <div class="row h-100">
+                        <div class="col-sm-7">
+                            <div class="h-50 pb-4">
+                                <div class="h-100 event event-h bg-img bg-img-radius-lg"
+                                     style="background-image: url({% static 'images/background/horizontal/1.jpg' %})">
+                                    <div class="event-content p-4">
+                                        <a href="#">
+                                            <h6>Dance with DJ SS</h6>
+                                        </a>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur, ex explicabo.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="h-50 pb-4">
+                                <div class="h-100 event event-h bg-img bg-img-radius-lg"
+                                     style="background-image: url({% static 'images/background/horizontal/2.jpg' %})">
+                                    <div class="event-content p-4">
+                                        <a href="#">
+                                            <h6>Lorem ipsum</h6>
+                                        </a>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur, ex explicabo.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section col-xl-5 col-lg-6">
+                    <ul class="nav nav-tabs line-tabs line-tabs-primary text-uppercase mb-4" id="songsList"
+                        role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="recent-tab" data-toggle="tab" href="#recent"
+                               role="tab" aria-controls="recent" aria-selected="true">Recent</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="trending-tab" data-toggle="tab" href="#trending"
+                               role="tab" aria-controls="trending" aria-selected="false">Trending</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="songsListContent">
+                        <div class="tab-pane fade show active" id="recent" role="tabpanel" aria-labelledby="recent-tab">
+                            <div class="custom-list">
+                                {% for song in latest_songs %}
+                                    <div class="custom-list--item">
+                                        <div class="text-dark custom-card--inline">
+                                            <div class="custom-card--inline-img">
+                                                <img src="{{ song.thumbnail }}" alt="" class="card-img--radius-sm"></div>
+                                            <div class="custom-card--inline-desc">
+                                                <p class="text-truncate mb-0">{{ song.title }}</p>
+                                                <p class="text-truncate text-muted font-sm">{{ song.artist }}</p>
+                                            </div>
+                                        </div>
+                                        <ul class="custom-card--labels d-flex ml-auto">
+                                            <li>
+                                                <span class="badge badge-pill badge-warning">
+                                                    <i class="la la-star"></i>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="trending" role="tabpanel" aria-labelledby="trending-tab">
+                            <div class="custom-list">
+                                <div class="custom-list--item">
+                                    <div class="text-dark custom-card--inline">
+                                        <div class="custom-card--inline-img">
+                                            <img src="#" alt="" class="card-img--radius-sm">
+                                        </div>
+                                        <div class="custom-card--inline-desc">
+                                            <p class="text-truncate mb-0">Mummy</p>
+                                            <p class="text-truncate text-muted font-sm">Arebica Luna</p>
+                                        </div>
+                                    </div>
+                                    <ul class="custom-card--labels d-flex ml-auto">
+                                        <li>
+                                            <span class="badge badge-pill badge-warning">
+                                                <i class="la la-star"></i>
+                                            </span>
+                                        </li>
+                                        {% include 'includes/dropdown.html' %}
+                                    </ul>
+                                </div>
+                                <div class="custom-list--item">
+                                    <div class="text-dark custom-card--inline">
+                                        <div class="custom-card--inline-img">
+                                            <img src="#" alt="" class="card-img--radius-sm">
+                                        </div>
+                                        <div class="custom-card--inline-desc">
+                                            <p class="text-truncate mb-0">Deep inside</p>
+                                            <p class="text-truncate text-muted font-sm">Pimila Holliwy</p>
+                                        </div>
+                                    </div>
+                                    <ul class="custom-card--labels d-flex ml-auto">
+                                        {% include 'includes/dropdown.html' %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="heading">
+                    <div class="d-flex flex-wrap align-items-end">
+                        <div class="flex-grow-1">
+                            <h4>New Releases</h4>
+                            <p>Listen recently release music</p>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-pill btn-air btn-primary">View All</a>
+                    </div>
+                    <hr>
+                </div>
+                <div class="carousel-item-5 arrow-pos-3">
+                    {% for song in latest_songs %}
+                        <div class="custom-card">
+                            <div class="custom-card--img">
+                                <div class="custom-card--info">
+                                    <ul class="custom-card--labels d-flex">
+                                        <li>
+                                            <span class="badge badge-pill badge-warning">
+                                                <i class="la la-star"></i>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                    <div class="dropdown dropdown-icon">
+                                        <a href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="ion-md-more"></i>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li class="dropdown-item">
+                                                <a href="javascript:void(0);" class="dropdown-link favorite">
+                                                    <i class="la la-heart-o"></i>
+                                                </a>
+                                            </li>
+                                            <li class="dropdown-item">
+                                                <a href="javascript:void(0);" class="dropdown-link">
+                                                    <i class="la la-plus"></i>
+                                                </a>
+                                            </li>
+                                            <li class="dropdown-item">
+                                                <a href="javascript:void(0);" class="dropdown-link">
+                                                    <i class="la la-download"></i>
+                                                </a>
+                                            </li>
+                                            <li class="dropdown-item">
+                                                <a href="javascript:void(0);" class="dropdown-link">
+                                                    <i class="la la-share-alt"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0);"
+                                   data-audio='{"name": "{{ song.title }}", "artist": "Arebica Luna", "album": "Mummy", "url": "{{ song.song.url }}", "cover_art_url": "{{ song.thumbnail.url }}"}'>
+                                    <img src="{{ song.thumbnail.url }}" alt=""
+                                         style="height: 180px; width: 290px"
+                                         class="card-img--radius-lg">
+                                </a>
+                            </div>
+                            <a href="{% url 'core:upload-details' song.audio_id %}" class="custom-card--link mt-2">
+                                <h6 style="overflow: hidden">{{ song.title }}</h6>
+                                <p>{{ song.artists.0.name }}</p>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="section">
+                <div class="heading">
+                    <div class="d-flex flex-wrap align-items-end">
+                        <div class="flex-grow-1"><h4>Featured Artists</h4>
+                            <p>Select you best to listen</p></div>
+                        <a href="#" class="btn btn-sm btn-pill btn-air btn-primary">View All</a></div>
+                    <hr>
+                </div>
+                <div class="carousel-item-6 arrow-pos-2">
+                    {% for artist in artists %}
+                        <div class="custom-card">
+                            <div class="custom-card--img">
+                                <a href="#">
+                                    <img src="{% static 'images/cover/large/2.jpg' %}" alt="Arebica Luna" class="card-img--radius-lg">
+                                </a>
+                            </div>
+                            <a href="#" class="custom-card--link mt-2">
+                                <h6 class="mb-0">{{ artist.name }}</h6>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="section">
+                <div class="heading">
+                    <div class="d-flex flex-wrap align-items-end">
+                        <div class="flex-grow-1"><h4>Genres</h4>
+                            <p>Select you genre</p></div>
+                        <a href="{% url 'core:genres' %}" class="btn btn-sm btn-pill btn-air btn-primary">View All</a></div>
+                    <hr>
+                </div>
+                <div class="carousel-item-6 arrow-pos-1">
+                    {% for genre in genres %}
+                        <div class="custom-card">
+                            <div class="custom-card--img">
+                                <a href="{% url 'core:songs-by-genre' genre.id %}">
+                                    <img src="{{ genre.thumbnail.url }}" alt="Remix Songs"
+                                         class="card-img--radius-md">
+                                    <span class="bg-blur">{{ genre.name }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% include 'includes/footer.html' %}
+    </main>
 
 {% endblock %}
