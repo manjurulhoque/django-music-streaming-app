@@ -1,0 +1,81 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main id="pageWrapper">
+        <div class="banner bg-artists"></div>
+        <div class="main-container">
+            <div class="row section text-center text-md-left">
+                <div class="col-xl-3 col-lg-4 col-sm-5">
+                    <img src="{% static 'images/artists/default.jpg' %}" alt="" class="card-img--radius-lg" style="filter: blur(4px) brightness(.9)">
+                </div>
+                <div class="col-xl-9 col-lg-8 col-sm-7">
+                    <div class="row pt-4">
+                        <div class="col-xl-8 col-lg-6">
+                            <h5>{{ artist.name }}</h5>
+                            <p>DOB: --</p>
+                            <div class="text-warning stars"><i class="la la-star"></i> <i class="la la-star"></i> <i class="la la-star"></i> <i class="la la-star"></i> <i class="la la-star-half-empty"></i></div>
+                            <div class="mt-4"><a href="javascript:void(0);" class="btn btn-pill btn-air btn-bold btn-danger">Play All</a></div>
+                        </div>
+                        <div class="col-xl-4 col-lg-6">
+                            <div class="pt-3 pt-lg-0 text-lg-right">
+                                <button class="btn btn-pill btn-air btn-danger btn-icon-only"><i class="la la-heart-o"></i></button>
+                                <button class="btn btn-pill btn-air btn-brand btn-icon-only"><i class="la la-share-alt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <ul class="nav nav-tabs line-tabs line-tabs-primary text-uppercase mb-4" id="artistDetails" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" id="song-tab" data-toggle="tab" href="#song" role="tab" aria-controls="song" aria-selected="true">Top Songs</a></li>
+                    <li class="nav-item"><a class="nav-link" id="bio-tab" data-toggle="tab" href="#bio" role="tab" aria-controls="bio" aria-selected="false">Biography</a></li>
+                </ul>
+                <div class="tab-content" id="artistDetailsContent">
+                    <div class="tab-pane fade show active" id="song" role="tabpanel" aria-labelledby="song-tab">
+                        <div class="row align-items-end"><span class="col-6 font-weight-bold">{{ songs.count }} Track</span>
+                            <div class="col-6 ml-auto">
+                                <form action="#" class="form-inline justify-content-end">
+                                    <label class="mr-2" for="filter1">Sorted By:</label>
+                                    <select class="custom-select mr-sm-2" id="filter1">
+                                        <option selected="selected">Popular</option>
+                                        <option value="1">A-Z</option>
+                                        <option value="2">Z-A</option>
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="custom-list">
+                            {% for song in songs %}
+                                <div class="custom-list--item">
+                                    <div class="text-dark custom-card--inline">
+                                        <div class="custom-card--inline-img">
+                                            <img src="{{ song.thumbnail.url }}" alt="" class="card-img--radius-sm">
+                                        </div>
+                                        <div class="custom-card--inline-desc">
+                                            <p class="text-truncate mb-0">{{ song.title }}</p>
+                                            <p class="text-truncate text-muted font-sm">{{ artist.name }}</p>
+                                        </div>
+                                    </div>
+                                    <ul class="custom-card--labels d-flex ml-auto">
+                                        <li>{{ song.duration }}</li>
+                                        {% include 'includes/dropdown.html' %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show" id="bio" role="tabpanel" aria-labelledby="bio-tab">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos ex magnam magni odit praesentium, recusandae reiciendis sequi tempora? Ad commodi consequatur deleniti dolorum fugiat iste minima rerum sed similique voluptate.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'includes/footer.html' %}
+    </main>
+
+{% endblock %}

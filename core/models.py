@@ -1,5 +1,5 @@
 import math
-from time import strftime
+from time import strftime, gmtime
 
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -43,7 +43,7 @@ class Song(models.Model):
     song = models.FileField(upload_to=song_directory_path)
     # audio_location = models.CharField(max_length=255)
     genre = models.ForeignKey(Genre, on_delete=models.DO_NOTHING)
-    artists = models.ManyToManyField(Artist)
+    artists = models.ManyToManyField(Artist, related_name='songs')
     size = models.IntegerField(default=0)
     playtime = models.CharField(max_length=10, default="0.00")
     type = models.CharField(max_length=10)
@@ -53,7 +53,7 @@ class Song(models.Model):
 
     @property
     def duration(self):
-        return str(datetime.timedelta(seconds=float(self.playtime)))
+        return str(strftime('%H:%M:%S', gmtime(float(self.playtime))))
 
     @property
     def file_size(self):

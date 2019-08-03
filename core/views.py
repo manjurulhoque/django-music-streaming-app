@@ -92,6 +92,25 @@ class SongsByGenreListView(DetailView):
         return context
 
 
+class ArtistListView(ListView):
+    model = Artist
+    template_name = 'artists/index.html'
+    context_object_name = 'artists'
+
+
+class ArtistDetailView(DetailView):
+    model = Artist
+    template_name = 'artists/show.html'
+    context_object_name = 'artist'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+
+    def get_context_data(self, **kwargs):
+        context = super(ArtistDetailView, self).get_context_data(**kwargs)
+        context['songs'] = self.get_object().songs.all()
+        return context
+
+
 class FavoriteCreateView(CreateView):
     form_class = FavoriteForm
     http_method_names = ['post']

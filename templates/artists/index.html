@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main id="pageWrapper">
+        <div class="banner bg-song"></div>
+        <div class="main-container">
+            <div class="section row">
+                {% for artist in artists %}
+                    <div class="col-xl-3 col-lg-4 col-sm-6 pb-4">
+                        <div class="custom-card">
+                            <div class="custom-card--img">
+                                <a href="{% url 'core:artist-details' artist.slug %}">
+                                    <img src="{% static 'images/artists/default.jpg' %}" alt="Artist" class="card-img--radius-md" style="filter: blur(4px)">
+                                    <span class="bg-blur">{{ artist.name }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% include 'includes/footer.html' %}
+    </main>
+
+{% endblock %}

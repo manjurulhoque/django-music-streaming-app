@@ -26,7 +26,7 @@
         </li>
         <li class="dropdown-item">
             {% if song %}
-                <a href="#" class="dropdown-link">
+                <a href="{% url 'core:upload-details' song.audio_id %}" class="dropdown-link">
                     <i class="la la-info-circle"></i> <span>Song Info</span>
                 </a>
             {% endif %}
