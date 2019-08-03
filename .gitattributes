@@ -1,7 +1,21 @@
-# Normalize line endings to avoid spurious failures in the core test suite on Windows.
-*html text eol=lf
-*css text eol=lf
-*js text eol=lf
-tests/staticfiles_tests/apps/test/static/test/*txt text eol=lf
-tests/staticfiles_tests/project/documents/test/*txt text eol=lf
-docs/releases/*.txt merge=union
+# Set default behaviour, in case users don't have core.autocrlf set.
+* text=auto
+
+# Explicitly declare text files we want to always be normalized and converted
+# to native line endings on checkout.
+*.py text
+*.html text
+*.css text
+
+.gitattributes text
+
+*.py diff=python
+*.html diff=html
+
+
+# Declare files that will always have CRLF line endings on checkout.
+#*.sln text eol=crlf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
