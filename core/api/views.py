@@ -7,7 +7,7 @@ from .serializers import SongSerializer
 class HomeViewAPI(APIView):
     def get(self, request, format=None):
         song_queryset = Song.objects.all()
-        serializer = SongSerializer(data=song_queryset, many=True)
+        serializer = SongSerializer(data=song_queryset, many=True, context={'request': request})
         serializer.is_valid()
 
         return Response({'songs': serializer.data})
