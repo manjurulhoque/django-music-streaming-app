@@ -9,5 +9,6 @@ urlpatterns = [
     # API Urls
     path('v1/api/', include([
         path('', include('core.api.urls')),
+        path('accounts/', include('accounts.api.urls')),
     ])),
 ]
