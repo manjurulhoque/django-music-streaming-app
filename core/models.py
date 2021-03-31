@@ -16,6 +16,9 @@ class Artist(models.Model):
     thumbnail = models.ImageField(upload_to="artists", default="artists/default.png")
     bio = models.TextField(verbose_name='Artist Bio', null=True, blank=False)
 
+    def __str__(self):
+        return self.name
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Artist, self).save(*args, **kwargs)
@@ -24,6 +27,9 @@ class Artist(models.Model):
 class Genre(models.Model):
     name = models.CharField(max_length=50)
     thumbnail = models.ImageField(upload_to="genres", default="genres/default.png")
+
+    def __str__(self):
+        return self.name
 
 
 class Favorite(models.Model):
@@ -52,6 +58,9 @@ class Song(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(verbose_name='Created At', default=timezone.now)
+
+    def __str__(self):
+        return self.title
 
     @property
     def duration(self):
