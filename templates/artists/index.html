@@ -12,7 +12,7 @@
                         <div class="custom-card">
                             <div class="custom-card--img">
                                 <a href="{% url 'core:artist-details' artist.slug %}">
-                                    <img src="{% static 'images/artists/default.jpg' %}" alt="Artist" class="card-img--radius-md" style="filter: blur(4px)">
+                                    <img src="{{ artist.thumbnail.url }}" alt="Artist" class="card-img--radius-md" style="filter: blur(4px)">
                                     <span class="bg-blur">{{ artist.name }}</span>
                                 </a>
                             </div>

@@ -13,7 +13,7 @@ from utils.song_utils import generate_file_name
 class Artist(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField()
-    thumbnail = models.ImageField(upload_to="artists", default="default.png")
+    thumbnail = models.ImageField(upload_to="artists", default="artists/default.png")
     bio = models.TextField(verbose_name='Artist Bio', null=True, blank=False)
 
     def save(self, *args, **kwargs):
@@ -23,7 +23,7 @@ class Artist(models.Model):
 
 class Genre(models.Model):
     name = models.CharField(max_length=50)
-    thumbnail = models.ImageField(upload_to="genres", default="default.png")
+    thumbnail = models.ImageField(upload_to="genres", default="genres/default.png")
 
 
 class Favorite(models.Model):
