@@ -23,7 +23,7 @@ class Artist(models.Model):
 
 class Genre(models.Model):
     name = models.CharField(max_length=50)
-    thumbnail = models.ImageField(upload_to="genres", default="default.jpeg")
+    thumbnail = models.ImageField(upload_to="genres", default="default.png")
 
 
 class Favorite(models.Model):
