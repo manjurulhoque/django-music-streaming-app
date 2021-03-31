@@ -8,7 +8,8 @@
 *.pyc
 __pycache__/
 local_settings.py
-media
+media/artists/*
+media/genres/*
 !media/genres/default.png
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
