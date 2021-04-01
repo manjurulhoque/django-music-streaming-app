@@ -18,7 +18,11 @@ class GenreSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.ModelSerializer):
     artists = ArtistSerializer(many=True)
     genre = GenreSerializer()
+    url = serializers.SerializerMethodField('get_url')
 
     class Meta:
         model = Song
         fields = "__all__"
+
+    def get_url(self, obj):
+        return self.context['request'].build_absolute_uri(obj.song.url)
