@@ -16,6 +16,9 @@ urlpatterns = [
         path('upload', SongUploadView.as_view(), name='upload'),
         path('<slug:audio_id>', SongDetailsView.as_view(), name='upload-details'),
     ])),
+
+    # get task
+    path('task/<str:task_id>/<str:song_id>/', TaskView.as_view(), name='task'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

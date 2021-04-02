@@ -44,11 +44,11 @@ def song_directory_path(instance, filename):
 
 class Song(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    audio_id = models.TextField()
+    audio_id = models.TextField(null=True)
     title = models.CharField(max_length=200, verbose_name="Song name")
     description = models.TextField()
     thumbnail = models.ImageField(upload_to="thumbnails", blank=False)
-    song = models.FileField(upload_to=song_directory_path)
+    song = models.FileField(upload_to=song_directory_path, null=True)
     # audio_location = models.CharField(max_length=255)
     genre = models.ForeignKey(Genre, on_delete=models.DO_NOTHING)
     artists = models.ManyToManyField(Artist, related_name='songs')
@@ -58,6 +58,7 @@ class Song(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(verbose_name='Created At', default=timezone.now)
+    youtube_url = models.TextField(verbose_name="Youtube URL", null=True, blank=True)
 
     def __str__(self):
         return self.title

@@ -5,90 +5,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
     <link href="{% static 'css/select2-bootstrap4.min.css' %}" rel="stylesheet"/>
-
-    <style>
-        .lds-ellipsis {
-            display: inline-block;
-            position: relative;
-            width: 64px;
-            height: 64px;
-        }
-
-        .lds-ellipsis div {
-            position: absolute;
-            top: 27px;
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            background: #921bb3;
-            animation-timing-function: cubic-bezier(0, 1, 1, 0);
-        }
-
-        .lds-ellipsis div:nth-child(1) {
-            left: 6px;
-            animation: lds-ellipsis1 0.6s infinite;
-        }
-
-        .lds-ellipsis div:nth-child(2) {
-            left: 6px;
-            animation: lds-ellipsis2 0.6s infinite;
-        }
-
-        .lds-ellipsis div:nth-child(3) {
-            left: 26px;
-            animation: lds-ellipsis2 0.6s infinite;
-        }
-
-        .lds-ellipsis div:nth-child(4) {
-            left: 45px;
-            animation: lds-ellipsis3 0.6s infinite;
-        }
-
-        @keyframes lds-ellipsis1 {
-            0% {
-                transform: scale(0);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes lds-ellipsis3 {
-            0% {
-                transform: scale(1);
-            }
-            100% {
-                transform: scale(0);
-            }
-        }
-
-        @keyframes lds-ellipsis2 {
-            0% {
-                transform: translate(0, 0);
-            }
-            100% {
-                transform: translate(19px, 0);
-            }
-        }
-
-        .upload-image svg {
-            width: 55px;
-            height: 55px;
-        }
-
-        .upload-image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 260px;
-            height: 260px;
-            background-color: rgba(0, 0, 0, 0.06);
-            color: #4b4b4b;
-            border-radius: 5px;
-            overflow: hidden;
-            border: 2px dashed #cdcdcd;
-        }
-    </style>
+    <link href="{% static 'css/create-song.css' %}" rel="stylesheet"/>
 
 
 {% endblock %}
@@ -107,6 +24,7 @@
                                 <h6 class="card-title mb-0">Add Music</h6>
                             </div>
                             <div class="card-body">
+                                <p class="subtitle has-text-centered" id="progress-title"></p>
                                 <div class="row">
                                     <div class="col-md-6 col-xl-4">
                                         <div class="upload-image">
@@ -118,9 +36,15 @@
                                     </div>
                                     <div class="col-md-6 col-xl-8">
                                         <div class="form-row form-group">
-                                            <label for="songFile" class="col-md-4 text-md-right col-form-label">Song
-                                                File</label>
-                                            <div class="col-md-7">
+                                            <label for="youtube_url" class="col-md-4 text-md-right col-form-label">Download from youtube(Optional)</label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="youtube_url" id="youtube_url" class="form-control" required placeholder="Youtube URL..">
+                                            </div>
+                                            <button class="col-md-2 btn btn-sm btn-outline-success">Process</button>
+                                        </div>
+                                        <div class="form-row form-group">
+                                            <label for="songFile" class="col-md-4 text-md-right col-form-label">Song File</label>
+                                            <div class="col-md-8">
                                                 <div class="custom-file">
                                                     <input type="file" name="song" class="custom-file-input" id="songFile" accept=".mp3,audio/*" required>
                                                     <label class="custom-file-label" for="songFile" id="songChoose">Choose file</label>
@@ -132,13 +56,13 @@
                                         </div>
                                         <div class="form-row form-group">
                                             <label for="songName" class="col-md-4 text-md-right col-form-label">Song Name</label>
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <input type="text" name="title" id="songName" class="form-control" required value="">
                                             </div>
                                         </div>
                                         <div class="form-row form-group">
                                             <label for="songImage" class="col-md-4 text-md-right col-form-label">Song Cover Image</label>
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <div class="custom-file">
                                                     <input type="file" name="thumbnail" class="custom-file-input"
                                                            id="songImage" required>
@@ -151,14 +75,14 @@
                                         </div>
                                         <div class="form-row form-group">
                                             <label for="description" class="col-md-4 text-md-right col-form-label">Description</label>
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <textarea name="description" id="description" class="form-control"
                                                           required rows="5"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-row form-group">
                                             <label for="artistName" class="col-md-4 text-md-right col-form-label">Artist Name</label>
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <select name="artists[]" class="select2 form-control" multiple="multiple" id="artistName">
                                                     <option></option>
                                                     {% for artist in artists %}
@@ -170,7 +94,7 @@
                                         <div class="form-row form-group">
                                             <label for="genre"
                                                    class="col-md-4 text-md-right col-form-label">Genre</label>
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <select name="genre" id="genre" class="form-control" required>
                                                     <option value="" selected disabled>Select Genre</option>
                                                     {% for genre in genres %}
@@ -181,7 +105,7 @@
                                         </div>
                                         <div class="form-row form-group">
                                             <div class="col-md-4"></div>
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <div class="custom-control custom-radio custom-control-inline">
                                                     <input type="radio" id="free" name="type"
                                                            class="custom-control-input"
@@ -199,7 +123,7 @@
                                         <div class="form-row form-group" id="price">
                                             <label for="songPrice" class="col-md-4 text-md-right col-form-label">Song
                                                 Price</label>
-                                            <div class="col-md-7">
+                                            <div class="col-md-8">
                                                 <input type="number" step=".1" name="price" id="songPrice"
                                                        class="form-control" value="">
                                                 <span class="form-text text-muted">Please add Song Price if Song is paid</span>
@@ -240,9 +164,13 @@
 {% block javascripts %}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script type="text/javascript">
 
         let select2 = $(".select2");
+        let taskUrl = "";
+        let dots = 1;
+        let progressTitle = document.getElementById('progress-title');
 
         select2.select2({
             placeholder: "Select artists",
@@ -258,6 +186,18 @@
             $t.append($elm);
             $t.trigger('change.select2');
         });
+
+        $('#youtube_url').on('keyup', function (e) {
+            let url = $(this).val();
+            if (url.includes('youtube')) {
+
+                $('#songFile').attr('disabled', 'disabled');
+                $('#songFile').removeAttr('required');
+                $('#songName').removeAttr('required');
+                $('#songImage').removeAttr('required');
+                $('#description').removeAttr('required');
+            }
+        })
 
         $('#songImage').change(function () {
             if (this.files && this.files[0]) {
@@ -276,6 +216,24 @@
             return document.getElementById(el);
         }
 
+        function updateProgressTitle() {
+            dots++;
+            if (dots > 3) {
+                dots = 1;
+            }
+            progressTitle.innerHTML = 'processing youtube song ';
+            for (let i = 0; i < dots; i++) {
+                progressTitle.innerHTML += '.';
+            }
+        }
+
+        let timer;
+
+        function clearTimer(message) {
+            clearInterval(timer);
+            progressTitle.innerHTML = message;
+        }
+
         let form = $('form');
 
         form.submit(function (e) {
@@ -292,10 +250,35 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
+                    console.log(data);
                     form.find('button[type=submit]').attr('disabled', false);
                     form.find('.lds-ellipsis').css('display', "none");
 
-                    if (data.status === 'validation' || data.status === 'error') {
+                    if (data.task_id) {
+                        taskUrl = "{% url 'core:task' task_id=12345 song_id=9876 %}".replace(/12345/, data.task_id).replace(/9876/, data.song_id);
+                        updateProgressTitle();
+                        timer = setInterval(function () {
+                            updateProgressTitle();
+                            axios.get(taskUrl)
+                                .then(function (response) {
+                                    let taskStatus = response.data.task_status
+                                    if (taskStatus === 'SUCCESS') {
+                                        clearTimer('Check downloads for results');
+                                        $('#songName').val(response.data.title);
+                                        $('#description').val(response.data.description);
+
+                                    } else if (taskStatus === 'FAILURE') {
+                                        clearTimer('An error occurred');
+                                    }
+                                })
+                                .catch(function (err) {
+                                    console.log('err', err);
+                                    clearTimer('An error occurred');
+                                });
+                        }, 800);
+                    }
+
+                    /*if (data.status === 'validation' || data.status === 'error') {
                         $.each(data.message, function (index, message) {
                             toastr.warning(message);
                         });
@@ -313,7 +296,7 @@
                         setTimeout(function () {
                             window.location.href = data.redirect;
                         }, 2000);
-                    }
+                    } */
                 }, error: function (err) {
                     console.log(err.data);
                     form.find('.lds-ellipsis').css('display', "none");

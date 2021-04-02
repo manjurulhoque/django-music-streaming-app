@@ -1,20 +1,26 @@
+import os
+
+from celery import current_app
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import CreateView, DetailView, DeleteView, ListView
 
 from utils.song_utils import generate_key
 from .forms import *
 from tinytag import TinyTag
+from .tasks import download_audio_from_youtube
 
 
 def home(request):
     context = {
         'artists': Artist.objects.all(),
         'genres': Genre.objects.all()[:6],
-        'latest_songs': Song.objects.all()[:6]
+        'latest_songs': Song.objects.exclude(song__isnull=True)[:6]
     }
     return render(request, "home.html", context)
 
@@ -49,27 +55,73 @@ class SongUploadView(CreateView):
         return JsonResponse(form.errors, status=200)
 
     def form_valid(self, form):
-        song = TinyTag.get(self.request.FILES['song'].file.name)
-        form.instance.audio_id = generate_key(15, 15)
-        form.instance.user = self.request.user
-        form.instance.playtime = song.duration
-        form.instance.size = song.filesize
-        artists = []
-        for a in self.request.POST.getlist('artists[]'):
-            try:
-                artists.append(int(a))
-            except:
-                artist = Artist.objects.create(name=a)
-                artists.append(artist)
-        form.save()
-        form.instance.artists.set(artists)
-        form.save()
+        youtube_url = form.cleaned_data['youtube_url']
+        if youtube_url:
+            task = download_audio_from_youtube.delay(form.cleaned_data['youtube_url'])
+            form.instance.user = self.request.user
+            form.save()
+
+            artists = []
+            for a in self.request.POST.getlist('artists[]'):
+                try:
+                    artists.append(int(a))
+                except:
+                    artist = Artist.objects.create(name=a)
+                    artists.append(artist)
+            form.instance.artists.set(artists)
+            new_song = form.save()
+        else:
+            task = None
+            song = TinyTag.get(self.request.FILES['song'].file.name)
+            form.instance.audio_id = generate_key(15, 15)
+            form.instance.user = self.request.user
+            form.instance.playtime = int(song.duration)
+            form.instance.size = song.filesize
+
+            artists = []
+            for a in self.request.POST.getlist('artists[]'):
+                try:
+                    artists.append(int(a))
+                except:
+                    artist = Artist.objects.create(name=a)
+                    artists.append(artist)
+            form.save()
+            form.instance.artists.set(artists)
+            new_song = form.save()
+
         data = {
             'status': True,
+            'song_id': new_song.id,
+            'task_id': task.id if task else None,
+            'task_status': task.status if task else None,
             'message': "Successfully submitted form data.",
             'redirect': reverse_lazy('core:upload-details', kwargs={'audio_id': form.instance.audio_id})
         }
         return JsonResponse(data)
+
+
+class TaskView(View):
+    def get(self, request, task_id, song_id):
+        task = current_app.AsyncResult(task_id)
+        response_data = {'task_status': task.status, 'task_id': task.id}
+
+        if task.status == 'SUCCESS':
+            print(task.get())
+            title, url, size, description = task.get()
+            response_data['title'] = title
+            response_data['url'] = url
+            response_data['size'] = size
+            response_data['description'] = description
+
+            song = Song.objects.get(id=song_id)
+            try:
+                if os.path.isfile(song.song.path):
+                    os.remove(song.song.path)
+            except Exception as e:
+                print(e)
+            print(song)
+
+        return JsonResponse(response_data)
 
 
 class SongDetailsView(DetailView):
