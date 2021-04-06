@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import CreateView, DetailView, DeleteView, ListView
+from rest_framework.decorators import api_view
 
 from utils.song_utils import generate_key
 from .forms import *
@@ -20,9 +21,32 @@ def home(request):
     context = {
         'artists': Artist.objects.all(),
         'genres': Genre.objects.all()[:6],
-        'latest_songs': Song.objects.exclude(song__isnull=True)[:6]
+        'latest_songs': Song.objects.exclude(song__exact='').exclude(song__isnull=True).exclude(audio_id__exact='').exclude(audio_id__isnull=True)[:6]
     }
     return render(request, "home.html", context)
+
+
+@api_view(['POST'])
+def youtube_convert_to_mp3(request):
+    form = YoutubeForm(request.POST)
+    if form.is_valid():
+        task = download_audio_from_youtube.delay(form.cleaned_data['youtube_url'])
+        form.instance.audio_id = generate_key(15, 15)
+        form.instance.user = request.user
+        new_song = form.save()
+        status = True
+    else:
+        new_song = task = None
+        status = False
+
+    data = {
+        'status': status,
+        'song_id': new_song.id if new_song else None,
+        'task_id': task.id if task else None,
+        'task_status': task.status if task else None,
+        'message': "Successfully submitted form data.",
+    }
+    return JsonResponse(data)
 
 
 class SongUploadView(CreateView):
@@ -55,49 +79,33 @@ class SongUploadView(CreateView):
         return JsonResponse(form.errors, status=200)
 
     def form_valid(self, form):
-        youtube_url = form.cleaned_data['youtube_url']
-        if youtube_url:
-            task = download_audio_from_youtube.delay(form.cleaned_data['youtube_url'])
-            form.instance.user = self.request.user
-            form.save()
+        song = TinyTag.get(self.request.FILES['song'].file.name)
+        form.instance.audio_id = generate_key(15, 15)
+        form.instance.user = self.request.user
+        form.instance.playtime = int(song.duration)
+        form.instance.size = song.filesize
+        new_song = form.save()
 
-            artists = []
-            for a in self.request.POST.getlist('artists[]'):
-                try:
-                    artists.append(int(a))
-                except:
-                    artist = Artist.objects.create(name=a)
-                    artists.append(artist)
-            form.instance.artists.set(artists)
-            new_song = form.save()
-        else:
-            task = None
-            song = TinyTag.get(self.request.FILES['song'].file.name)
-            form.instance.audio_id = generate_key(15, 15)
-            form.instance.user = self.request.user
-            form.instance.playtime = int(song.duration)
-            form.instance.size = song.filesize
+        artists = []
+        for a in self.request.POST.getlist('artists[]'):
+            try:
+                artists.append(int(a))
+            except:
+                artist = Artist.objects.create(name=a)
+                artists.append(artist)
 
-            artists = []
-            for a in self.request.POST.getlist('artists[]'):
-                try:
-                    artists.append(int(a))
-                except:
-                    artist = Artist.objects.create(name=a)
-                    artists.append(artist)
-            form.save()
-            form.instance.artists.set(artists)
-            new_song = form.save()
+        form.instance.artists.set(artists)
 
         data = {
             'status': True,
-            'song_id': new_song.id,
-            'task_id': task.id if task else None,
-            'task_status': task.status if task else None,
             'message': "Successfully submitted form data.",
             'redirect': reverse_lazy('core:upload-details', kwargs={'audio_id': form.instance.audio_id})
         }
         return JsonResponse(data)
+
+
+def update_song(request, song_id):
+    song = Song.objects.get(id=song_id)
 
 
 class TaskView(View):
@@ -106,7 +114,6 @@ class TaskView(View):
         response_data = {'task_status': task.status, 'task_id': task.id}
 
         if task.status == 'SUCCESS':
-            print(task.get())
             title, url, size, description = task.get()
             response_data['title'] = title
             response_data['url'] = url
@@ -119,7 +126,12 @@ class TaskView(View):
                     os.remove(song.song.path)
             except Exception as e:
                 print(e)
-            print(song)
+            # song.description = description
+            # song.size = size
+            # song.song = url
+            # song.save()
+
+            response_data['redirect'] = reverse_lazy('core:upload-details', kwargs={'audio_id': song.audio_id})
 
         return JsonResponse(response_data)
 

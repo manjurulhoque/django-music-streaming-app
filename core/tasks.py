@@ -68,6 +68,6 @@ def download_audio_from_youtube(video_url):
         size = file_data['formats'][0]['filesize']
         description = file_data.get('description', '')
 
-    return title, url, file_size(size), description
+    return title, url, size, description
 
 # print(download_audio_from_youtube('https://www.youtube.com/watch?v=TQR70KKYMmQ&ab_channel=PopChartbusters'))

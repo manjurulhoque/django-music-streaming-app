@@ -10,6 +10,7 @@ urlpatterns = [
     path('artists', ArtistListView.as_view(), name='artists'),
     path('artists/<slug:slug>', ArtistDetailView.as_view(), name='artist-details'),
     path('genres', GenreListView.as_view(), name='genres'),
+    path('youtube-upload', youtube_convert_to_mp3, name='youtube-upload'),
     path('genres/<int:pk>', SongsByGenreListView.as_view(), name='songs-by-genre'),
     path('songs/', include([
         path('make-favorite', favoriteunfavorite, name='song-favorite'),
@@ -20,5 +21,6 @@ urlpatterns = [
     # get task
     path('task/<str:task_id>/<str:song_id>/', TaskView.as_view(), name='task'),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

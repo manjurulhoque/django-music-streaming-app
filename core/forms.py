@@ -21,6 +21,19 @@ class SongUploadForm(forms.ModelForm):
         return self.user
 
 
+class YoutubeForm(forms.ModelForm):
+    class Meta:
+        model = Song
+        fields = ("youtube_url",)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(YoutubeForm, self).__init__(*args, **kwargs)
+
+    def clean_user(self):
+        return self.user
+
+
 class FavoriteForm(forms.ModelForm):
     class Meta:
         model = Favorite

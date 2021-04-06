@@ -25,6 +25,7 @@
                             </div>
                             <div class="card-body">
                                 <p class="subtitle has-text-centered" id="progress-title"></p>
+                                <input id="song-id" type="hidden" value="">
                                 <div class="row">
                                     <div class="col-md-6 col-xl-4">
                                         <div class="upload-image">
@@ -38,9 +39,9 @@
                                         <div class="form-row form-group">
                                             <label for="youtube_url" class="col-md-4 text-md-right col-form-label">Download from youtube(Optional)</label>
                                             <div class="col-md-6">
-                                                <input type="text" name="youtube_url" id="youtube_url" class="form-control" required placeholder="Youtube URL..">
+                                                <input type="text" name="youtube_url" id="youtube_url" class="form-control" placeholder="Youtube URL..">
                                             </div>
-                                            <button class="col-md-2 btn btn-sm btn-outline-success">Process</button>
+                                            <button class="col-md-2 btn btn-sm btn-outline-success" id="process" disabled data-url="{% url 'core:youtube-upload' %}">Process</button>
                                         </div>
                                         <div class="form-row form-group">
                                             <label for="songFile" class="col-md-4 text-md-right col-form-label">Song File</label>
@@ -65,7 +66,7 @@
                                             <div class="col-md-8">
                                                 <div class="custom-file">
                                                     <input type="file" name="thumbnail" class="custom-file-input"
-                                                           id="songImage" required>
+                                                           id="songImage" required accept="image/*">
                                                     <label class="custom-file-label" for="songImage">Choose file</label>
                                                     <span role="alert" style="color: #8c8e90; font-size: 10px">
                                                         <strong>Max file size is 2MB</strong>
@@ -171,6 +172,9 @@
         let taskUrl = "";
         let dots = 1;
         let progressTitle = document.getElementById('progress-title');
+        let form = $('form');
+        let process_btn = $('#process');
+        let song_id = $('#song-id');
 
         select2.select2({
             placeholder: "Select artists",
@@ -187,15 +191,66 @@
             $t.trigger('change.select2');
         });
 
+        process_btn.on('click', function (e) {
+            e.preventDefault();
+
+            let url = $(this).data('url');
+            let youtube_url = $('#youtube_url').val();
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {
+                    youtube_url: youtube_url
+                },
+                dataType: "json",
+                success: function (data) {
+                    form.find('button[type=submit]').attr('disabled', true);
+                    form.find('.lds-ellipsis').css('display', "none");
+
+                    if (data.task_id) {
+                        song_id.val(data.song_id);
+                        taskUrl = "{% url 'core:task' task_id=12345 song_id=9876 %}".replace(/12345/, data.task_id).replace(/9876/, data.song_id);
+                        updateProgressTitle();
+                        timer = setInterval(function () {
+                            updateProgressTitle();
+                            axios.get(taskUrl)
+                                .then(function (response) {
+                                    let taskStatus = response.data.task_status
+                                    if (taskStatus === 'SUCCESS') {
+                                        clearTimer('Song downloaded and saved');
+                                        $('#songName').val(response.data.title);
+                                        $('#description').val(response.data.description);
+                                        alert('Song downloaded and saved');
+                                        window.location = response.data.redirect;
+
+                                    } else if (taskStatus === 'FAILURE') {
+                                        clearTimer('An error occurred');
+                                    }
+                                })
+                                .catch(function (err) {
+                                    console.log('err', err);
+                                    clearTimer('An error occurred');
+                                });
+                        }, 800);
+                    }
+                }, error: function (err) {
+                    console.log(err.data);
+                }
+            });
+        })
+
         $('#youtube_url').on('keyup', function (e) {
             let url = $(this).val();
             if (url.includes('youtube')) {
+                form.find('button[type=submit]').attr('disabled', true);
 
                 $('#songFile').attr('disabled', 'disabled');
                 $('#songFile').removeAttr('required');
                 $('#songName').removeAttr('required');
                 $('#songImage').removeAttr('required');
                 $('#description').removeAttr('required');
+                process_btn.removeAttr('disabled');
             }
         })
 
@@ -234,9 +289,8 @@
             progressTitle.innerHTML = message;
         }
 
-        let form = $('form');
-
         form.submit(function (e) {
+            console.log('test');
             e.preventDefault();
 
             $(this).find('button[type=submit]').attr('disabled', true);
@@ -250,8 +304,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    console.log(data);
-                    form.find('button[type=submit]').attr('disabled', false);
+                    //form.find('button[type=submit]').attr('disabled', false);
                     form.find('.lds-ellipsis').css('display', "none");
 
                     if (data.task_id) {
@@ -263,9 +316,11 @@
                                 .then(function (response) {
                                     let taskStatus = response.data.task_status
                                     if (taskStatus === 'SUCCESS') {
-                                        clearTimer('Check downloads for results');
+                                        clearTimer('Song downloaded and saved');
                                         $('#songName').val(response.data.title);
                                         $('#description').val(response.data.description);
+                                        alert('Song downloaded and saved');
+                                        window.location = response.data.redirect;
 
                                     } else if (taskStatus === 'FAILURE') {
                                         clearTimer('An error occurred');
