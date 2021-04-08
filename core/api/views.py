@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from core.models import Song
@@ -12,6 +12,18 @@ class HomeViewAPI(APIView):
         serializer.is_valid()
 
         return Response({'songs': serializer.data})
+
+
+class SongsByGenreListAPIView(ListAPIView):
+    serializer_class = SongSerializer
+    model = serializer_class.Meta.model
+
+    def get_queryset(self):
+        try:
+            genre_id = self.kwargs
+            return self.model.objects.filter(genre_id=genre_id).order_by('-created_at')
+        except:
+            return self.model.objects.all().order_by('-created_at')
 
 
 class ArtistListAPIView(ListAPIView):
