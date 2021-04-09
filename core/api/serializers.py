@@ -26,3 +26,11 @@ class SongSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return self.context['request'].build_absolute_uri(obj.song.url)
+
+
+class ArtistSongsSerializer(serializers.ModelSerializer):
+    songs = SongSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Artist
+        fields = "__all__"

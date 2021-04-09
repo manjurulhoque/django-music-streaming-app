@@ -8,10 +8,8 @@
 *.pyc
 __pycache__/
 local_settings.py
-media/artists/*
-media/genres/*
-!media/artists/default.png
-!media/genres/default.png
+!media/artists/*
+!media/genres/*
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.

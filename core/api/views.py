@@ -2,7 +2,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from core.models import Song
-from .serializers import SongSerializer, ArtistSerializer, GenreSerializer
+from .serializers import SongSerializer, ArtistSerializer, GenreSerializer, ArtistSongsSerializer
 
 
 class HomeViewAPI(APIView):
@@ -43,11 +43,16 @@ class ArtistListAPIView(ListAPIView):
 
 
 class ArtistRetrieveAPIView(RetrieveAPIView):
-    serializer_class = ArtistSerializer
+    serializer_class = ArtistSongsSerializer
     model = serializer_class.Meta.model
     queryset = model.objects.all()
     lookup_field = 'slug'
     lookup_url_kwarg = 'slug'
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class GenreListAPIView(ListAPIView):
