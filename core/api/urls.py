@@ -7,4 +7,5 @@ urlpatterns = [
     path('artists', views.ArtistListAPIView.as_view()),
     path('genres', views.GenreListAPIView.as_view()),
     path('genres/<int:pk>/songs', views.SongsByGenreListAPIView.as_view()),
+    path('songs/<int:pk>', views.SongRetrieveAPIView.as_view()),
 ]

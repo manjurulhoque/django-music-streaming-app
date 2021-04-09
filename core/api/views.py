@@ -9,6 +9,7 @@ class HomeViewAPI(APIView):
     """
         Get various type of data for home
     """
+
     def get(self, request, format=None):
         song_queryset = Song.objects.all()
         serializer = SongSerializer(data=song_queryset, many=True, context={'request': request})
@@ -46,5 +47,11 @@ class GenreListAPIView(ListAPIView):
         List of genres
     """
     serializer_class = ArtistSerializer
+    model = serializer_class.Meta.model
+    queryset = model.objects.all()
+
+
+class SongRetrieveAPIView(RetrieveAPIView):
+    serializer_class = SongSerializer
     model = serializer_class.Meta.model
     queryset = model.objects.all()
