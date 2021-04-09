@@ -42,6 +42,14 @@ class ArtistListAPIView(ListAPIView):
     queryset = model.objects.all()
 
 
+class ArtistRetrieveAPIView(RetrieveAPIView):
+    serializer_class = ArtistSerializer
+    model = serializer_class.Meta.model
+    queryset = model.objects.all()
+    lookup_field = 'slug'
+    lookup_url_kwarg = 'slug'
+
+
 class GenreListAPIView(ListAPIView):
     """
         List of genres
@@ -52,6 +60,9 @@ class GenreListAPIView(ListAPIView):
 
 
 class SongRetrieveAPIView(RetrieveAPIView):
+    """
+        Get song details
+    """
     serializer_class = SongSerializer
     model = serializer_class.Meta.model
     queryset = model.objects.all()

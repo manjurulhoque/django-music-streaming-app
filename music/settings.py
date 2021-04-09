@@ -131,6 +131,10 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.TokenAuthentication',
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    'DEFAULT_RENDERER_CLASSES': (
+        "core.api.renderers.ApiRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
     # "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "EXCEPTION_HANDLER": "core.api.custom_exception.custom_exception_handler",
 }
