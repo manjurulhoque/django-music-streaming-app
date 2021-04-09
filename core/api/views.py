@@ -43,23 +43,21 @@ class ArtistListAPIView(ListAPIView):
 
 
 class ArtistRetrieveAPIView(RetrieveAPIView):
+    """
+        Artist details view with songs
+    """
     serializer_class = ArtistSongsSerializer
     model = serializer_class.Meta.model
     queryset = model.objects.all()
     lookup_field = 'slug'
     lookup_url_kwarg = 'slug'
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
-
 
 class GenreListAPIView(ListAPIView):
     """
         List of genres
     """
-    serializer_class = ArtistSerializer
+    serializer_class = GenreSerializer
     model = serializer_class.Meta.model
     queryset = model.objects.all()
 

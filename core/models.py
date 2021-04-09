@@ -12,7 +12,7 @@ from utils.song_utils import generate_file_name
 
 class Artist(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
     thumbnail = models.ImageField(upload_to="artists", default="artists/default.png")
     bio = models.TextField(verbose_name='Artist Bio', null=True, blank=False)
 
