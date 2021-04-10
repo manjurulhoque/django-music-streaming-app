@@ -18,6 +18,12 @@ class HomeViewAPI(APIView):
         return Response({'songs': serializer.data})
 
 
+class SongListAPIView(ListAPIView):
+    serializer_class = SongSerializer
+    model = serializer_class.Meta.model
+    queryset = model.objects.all()
+
+
 class SongsByGenreListAPIView(ListAPIView):
     """
         List of songs by genre

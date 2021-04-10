@@ -4,6 +4,7 @@ from core.api import views
 
 urlpatterns = [
     path('home', views.HomeViewAPI.as_view()),
+    path('songs', views.SongListAPIView.as_view()),
     path('artists', views.ArtistListAPIView.as_view()),
     path('artists/<slug:slug>', views.ArtistRetrieveAPIView.as_view()),
     path('genres', views.GenreListAPIView.as_view()),

@@ -19,6 +19,7 @@ class SongSerializer(serializers.ModelSerializer):
     artists = ArtistSerializer(many=True)
     genre = GenreSerializer()
     url = serializers.SerializerMethodField('get_url')
+    artist = serializers.SerializerMethodField('get_joined_artist')
 
     class Meta:
         model = Song
@@ -26,6 +27,9 @@ class SongSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return self.context['request'].build_absolute_uri(obj.song.url)
+
+    def get_joined_artist(self, obj):
+        return ", ".join([a.name for a in obj.artists.all()])
 
 
 class ArtistSongsSerializer(serializers.ModelSerializer):
