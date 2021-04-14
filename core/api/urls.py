@@ -3,6 +3,7 @@ from django.urls import path
 from core.api import views
 
 urlpatterns = [
+    path('default', views.default_song),
     path('home', views.HomeViewAPI.as_view()),
     path('songs', views.SongListAPIView.as_view()),
     path('artists', views.ArtistListAPIView.as_view()),

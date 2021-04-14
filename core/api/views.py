@@ -1,8 +1,17 @@
+from rest_framework import status
+from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from core.models import Song
 from .serializers import SongSerializer, ArtistSerializer, GenreSerializer, ArtistSongsSerializer
+
+
+@api_view(['GET'])
+def default_song(request):
+    song = Song.objects.filter(type='free')[1]
+    serializer = SongSerializer(song, context={'request': request})
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class HomeViewAPI(APIView):
