@@ -36,7 +36,7 @@ lockfile==0.12.2
 msgpack==0.6.2
 packaging==20.3
 pep517==0.8.2
-Pillow==8.1.2
+Pillow==9.3.0
 progress==1.5
 prompt-toolkit==3.0.18
 protobuf==3.15.6
