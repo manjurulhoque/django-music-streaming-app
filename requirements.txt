@@ -39,7 +39,7 @@ pep517==0.8.2
 Pillow==9.3.0
 progress==1.5
 prompt-toolkit==3.0.18
-protobuf==3.15.6
+protobuf==3.18.3
 psycopg2==2.8.6
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
